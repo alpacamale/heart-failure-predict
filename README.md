@@ -1,6 +1,4 @@
-# Heart Failure Predict Models
-
-심부전증으로 인한 사망을 예측하는 모델을 구현합니다.
+# Heart Failure Predict
 
 ## 데이터셋
 
