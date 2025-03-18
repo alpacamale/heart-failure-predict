@@ -1,5 +1,3 @@
-# Heart Failure Predict
-
 ## 데이터셋
 
 - **age**: 환자의 나이
