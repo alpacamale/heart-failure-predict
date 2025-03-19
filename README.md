@@ -1,84 +1,72 @@
-## 데이터셋
+## Project Overview
 
-- **age**: 환자의 나이
-- **anaemia**: 환자의 빈혈증 여부 (0: 정상, 1: 빈혈)
-- **creatinine_phosphokinase**: 크레아틴키나제 검사 결과
-- **diabetes**: 당뇨병 여부 (0: 정상, 1: 당뇨)
-- **ejection_fraction**: 박출계수 (%)
-- **high_blood_pressure**: 고혈압 여부 (0: 정상, 1: 고혈압)
-- **platelets**: 혈소판 수 (kiloplatelets/mL)
-- **serum_creatinine**: 혈중 크레아틴 레벨 (mg/dL)
-- **serum_sodium**: 혈중 나트륨 레벨 (mEq/L)
-- **sex**: 성별 (0: 여성, 1: 남성)
-- **smoking**: 흡연 여부 (0: 비흡연, 1: 흡연)
-- **time**: 관찰 기간 (일)
-- **DEATH_EVENT**: 사망 여부 (0: 생존, 1: 사망)
+This project aims to predict whether a heart failure patient will survive (`DEATH_EVENT = 0`) or not (`DEATH_EVENT = 1`) based on clinical data.
 
-_데이터 출처: https://www.kaggle.com/andrewmvd/heart-failure-clinical-data_
+Heart failure is a serious condition, and early prediction can help doctors provide better treatments.  
+By using **machine learning classification models**, I can analyze patterns in medical data and improve decision-making.
 
-## EDA
+I compare **three classification models**:
 
-데이터를 분석하기 전에 데이터의 특징을 시각화하고 이해하는 과정입니다.  
-아래의 순서대로 진행됩니다.
+- **Decision Tree**
+- **Random Forest**
+- **Logistic Regression**
 
-1. **데이터의 기본 정보 확인**
-   - df.info(), df.describe(), df.head()
-   - 결측치(누락된 값) 확인: df.isnull().sum()
-2. **데이터 분포 파악**
-   - 히스토그램(sns.histplot())
-   - 박스플롯(sns.boxplot())
-3. **데이터 관계 확인**
-   - 상관계수(df.corr(), sns.heatmap())
-4. **이상치 탐색**
-   - 이상하게 튀는 값 있는지 체크
+The best-performing model is **Logistic Regression** in terms of overall metrics.  
+However, since Recall is the most important metric in this case, Random Forest performed just as well as Logistic Regression, both achieving a recall score of 0.79.  
+Therefore, Random Forest is also a strong candidate.
 
-## 모델 학습, 평가
+## Dataset
 
-1. **모델 선택**
-   - 디시전 트리
-   - 랜덤 포레스트
-   - 로지스틱 회귀
-2. **피쳐 선택, 추출 가공**
-   - 모델에 맞는 피쳐 선정, 가공
-   - 관계가 낮은 피쳐 제거(df.drop())
-   - 로그 변환(np.log())
-   - 스케일(scaler.fit(), scaler.transform())
-3. **데이터 학습**
-   - model.fit()
-4. **예측 수행**
-   - model.predict()
-5. **평가**
-   - kfold로 교차 검증
-   - 정확도, 정밀도, 재현률, f1 스코어, 오차 행렬
+### License
 
-## 구현
+The dataset is licensed under **Creative Commons Attribution 4.0 International (CC BY 4.0)**.
 
-### 디시전 트리
+### Attribution
 
-상관 계수가 낮은 당뇨, 성별, 흡연 여부를 제외했습니다.  
-이상치에 의한 영향이 강하기 때문에 이상치로 판단되는 데이터를 제거했습니다.
+- **Original Dataset Author:** Larxel
+- **Source:** [Kaggle Dataset Link](https://www.kaggle.com/datasets/andrewmvd/heart-failure-clinical-data/data?select=heart_failure_clinical_records_dataset.csv)
+- **License:** [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-- **평균 정확도**: 0.7690
-- **평균 정밀도**: 0.6000
-- **평균 재현율**: 0.6523
-- **평균 F1 스코어**: 0.6014
+### Description
 
-### 랜덤 포레스트
+| Column                     | Description                                               |
+| -------------------------- | --------------------------------------------------------- |
+| `age`                      | Age of the patient                                        |
+| `anaemia`                  | Decrease of red blood cells (0: No, 1: Yes)               |
+| `creatinine_phosphokinase` | Level of CPK enzyme in blood (mcg/L)                      |
+| `diabetes`                 | If the patient has diabetes (0: No, 1: Yes)               |
+| `ejection_fraction`        | Percentage of blood leaving the heart at each contraction |
+| `high_blood_pressure`      | If the patient has hypertension (0: No, 1: Yes)           |
+| `platelets`                | Platelet count in the blood (kiloplatelets/mL)            |
+| `serum_creatinine`         | Level of creatinine in the blood (mg/dL)                  |
+| `serum_sodium`             | Level of sodium in the blood (mEq/L)                      |
+| `sex`                      | Gender of the patient (0: Female, 1: Male)                |
+| `smoking`                  | If the patient smokes (0: No, 1: Yes)                     |
+| `time`                     | Follow-up period (days)                                   |
+| `DEATH_EVENT`              | Target variable (0: No, 1: Yes)                           |
 
-상관 계수가 낮은 당뇨, 성별, 흡연 여부를 제외했습니다.
+## 🔬 Model Training Process
 
-- **평균 정확도:** 0.8397
-- **평균 정밀도**: 0.7628
-- **평균 재현율**: 0.6966
-- **평균 F1 스코어**: 0.7206
+1. **Data Preprocessing**
 
-### 로지스틱 회귀
+   - Handle missing values (if any)
+   - Normalize numerical features
 
-상관 계수가 낮은 당뇨, 성별, 흡연 여부를 제외했습니다.  
-선형 관계가 비교적 약한 혈소판 수, 박출계수, 크레아틴 키나아제 수치를 제외했습니다.  
-정확한 학습을 위해 스케일링 했습니다.
+2. **Feature Selection**
 
-- **평균 정확도**: 0.8229
-- **평균 정밀도**: 0.7833
-- **평균 재현율**: 0.6446
-- **평균 F1 스코어**: 0.6827
+   - Analyze feature importance using correlation heatmaps
+   - Remove unnecessary or redundant features
+
+3. **Model Training**
+
+   - Train three classification models: **Decision Tree, Random Forest, Logistic Regression**
+   - Use **GridSearchCV** for hyperparameter tuning
+
+4. **Evaluation Metrics**
+   - Accuracy, Precision, Recall, F1-score
+   - ROC-AUC for final model selection
+
+## Links
+
+- **Dataset:** [heart_failure_clinical_records_dataset.csv](data/heart_failure_clinical_records_dataset.csv)
+- **Notebook:** [heart-failure-classification](heart-failure-classification.ipynb)
