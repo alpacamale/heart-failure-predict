@@ -45,7 +45,7 @@ The dataset is licensed under **Creative Commons Attribution 4.0 International (
 | `time`                     | Follow-up period (days)                                   |
 | `DEATH_EVENT`              | Target variable (0: No, 1: Yes)                           |
 
-## 🔬 Model Training Process
+## Model Training Process
 
 1. **Data Preprocessing**
 
